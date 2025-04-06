@@ -32,13 +32,24 @@ void BMFontConfiguration::purgeCachedData() {
     getFontConfigs().clear();
 }
 
+cocos2d::CCString* createWithContentsOfFile(const char* pszFileName)
+{
+    unsigned long size = 0;
+    unsigned char* pData = 0;
+    cocos2d::CCString* pRet = NULL;
+    pData = cocos2d::CCFileUtils::sharedFileUtils()->getFileData(pszFileName, "rb", &size);
+    pRet = cocos2d::CCString::createWithData(pData, size);
+    CC_SAFE_DELETE_ARRAY(pData);
+    return pRet;
+}
+
 bool BMFontConfiguration::initWithFNTfile(std::string_view fntFile) {
     std::string fntFileStr(fntFile);
     #if defined(GEODE_IS_MOBILE) || !defined(NDEBUG)
     // on android, accessing internal assets manually won't work,
     // so we're just going to use cocos functions as intended.
     // oh and fullPathForFilename apparently crashes in debug mode, so we're using this in that case as well
-    auto ccString = cocos2d::CCString::createWithContentsOfFile(fntFileStr.c_str());
+    auto ccString = createWithContentsOfFile(fntFileStr.c_str());
     if (!ccString) {
         geode::log::error("Failed to read file '{}'", fntFileStr);
         return false;
