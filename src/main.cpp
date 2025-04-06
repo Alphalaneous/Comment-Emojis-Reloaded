@@ -1,6 +1,7 @@
 #include <Geode/modify/CommentCell.hpp>
 #include <Geode/modify/GameManager.hpp>
 #include <Geode/modify/ShareCommentLayer.hpp>
+#include <alphalaneous.alphas_geode_utils/include/NodeModding.h>
 
 #include "emoji-picker.hpp"
 #include "emojis.hpp"
@@ -78,26 +79,23 @@ class $modify(CommentCellHook, CommentCell) {
     }
 };
 
-class $modify(ShareCommentLayerHook, ShareCommentLayer) {
-    bool init(gd::string title, int charLimit, CommentType type, int ID, gd::string desc) {
-        if (!ShareCommentLayer::init(title, charLimit, type, ID, desc)) {
-            return false;
-        }
+class $nodeModify(ShareCommentLayerHook, ShareCommentLayer) {
+    void modify() {
 
+        auto self = reinterpret_cast<ShareCommentLayer*>(this);
+       
         auto btnSprite = cocos2d::CCSprite::create("picker_icon.png"_spr);
         btnSprite->setScale(0.75f);
         btnSprite->setColor({ 0, 0, 0 });
         btnSprite->setOpacity(105);
 
         auto btn = geode::cocos::CCMenuItemExt::createSpriteExtra(
-            btnSprite, [this](auto) {
-                EmojiPicker::create(m_commentInput)->show();
+            btnSprite, [self](auto) {
+                EmojiPicker::create(self->m_commentInput)->show();
             }
         );
         btn->setID("emoji-picker"_spr);
         btn->setPosition(175.f, 36.5f);
-        this->m_buttonMenu->addChild(btn);
-
-        return true;
+        self->m_buttonMenu->addChild(btn);
     }
 };
