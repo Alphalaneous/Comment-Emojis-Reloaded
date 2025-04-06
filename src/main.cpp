@@ -1,5 +1,7 @@
 #include <Geode/modify/CommentCell.hpp>
 #include <Geode/modify/GameManager.hpp>
+#include <Geode/binding/GJComment.hpp>
+#include <Geode/Enums.hpp>
 #include <Geode/modify/ShareCommentLayer.hpp>
 #include <alphalaneous.alphas_geode_utils/include/NodeModding.h>
 

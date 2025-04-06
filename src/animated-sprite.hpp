@@ -1,5 +1,10 @@
 #pragma once
 
+#include <cocos2d.h>
+#include <cstddef>
+#include <string>
+#include <vector>
+
 class FrameAnimation : public cocos2d::CCSprite {
 public:
     static FrameAnimation* create(const char* frame_prefix, size_t frame_count, float delay);
